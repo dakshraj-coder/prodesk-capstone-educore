@@ -1,6 +1,11 @@
 import Navbar from "@/components/layout/Navbar";
 import Sidebar from "@/components/layout/Sidebar";
 import Footer from "@/components/layout/Footer";
+import StatsCard from "@/components/dashboard/StatsCard";
+import ContinueLearning from "@/components/dashboard/ContinueLearning";
+import RecentCourses from "@/components/dashboard/RecentCourses";
+import UpcomingAssignments from "@/components/dashboard/UpcomingAssignments";
+import Announcements from "@/components/dashboard/Announcements";
 
 export default function Dashboard() {
   return (
@@ -10,28 +15,24 @@ export default function Dashboard() {
       <div className="flex min-h-screen">
         <Sidebar />
 
-        <main className="flex-1 p-6 bg-slate-100">
-  <h1 className="text-3xl font-bold mb-6">
-    Student Dashboard
-  </h1>
+        <main className="flex-1 bg-slate-100 p-6">
+          <h1 className="mb-6 text-3xl font-bold">
+            Student Dashboard
+          </h1>
 
-  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-    <div className="rounded-xl bg-white p-6 shadow">
-      <h2 className="text-lg font-semibold">Courses Enrolled</h2>
-      <p className="mt-3 text-4xl font-bold text-blue-600">12</p>
-    </div>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+            <StatsCard title="Courses Enrolled" value="12" />
+            <StatsCard title="Completed Courses" value="8" />
+            <StatsCard title="Certificates" value="5" />
+          </div>
 
-    <div className="rounded-xl bg-white p-6 shadow">
-      <h2 className="text-lg font-semibold">Completed</h2>
-      <p className="mt-3 text-4xl font-bold text-green-600">8</p>
-    </div>
-
-    <div className="rounded-xl bg-white p-6 shadow">
-      <h2 className="text-lg font-semibold">Certificates</h2>
-      <p className="mt-3 text-4xl font-bold text-purple-600">5</p>
-    </div>
-  </div>
-</main>
+          <div className="mt-8 grid gap-6 lg:grid-cols-2">
+            <UpcomingAssignments />
+            <Announcements />
+          </div>
+          <ContinueLearning />
+          <RecentCourses />
+        </main>
       </div>
 
       <Footer />

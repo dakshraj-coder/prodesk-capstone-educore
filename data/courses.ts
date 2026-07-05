@@ -8,7 +8,7 @@ export const courses = [
     rating: "4.8",
     description:
       "Learn React from scratch with components, props, state, hooks, routing, and build real-world applications.",
-    image: "/images/react-course.jpg",
+    image: "/images/react-course.png",
   },
   {
     id: 2,
@@ -19,7 +19,7 @@ export const courses = [
     rating: "4.9",
     description:
       "Master the Next.js App Router, layouts, server components, API routes, and deployment.",
-    image: "/images/nextjs-course.jpg",
+    image: "/images/nextjs-course.png",
   },
   {
     id: 3,
@@ -30,6 +30,6 @@ export const courses = [
     rating: "4.7",
     description:
       "Learn TypeScript fundamentals, interfaces, generics, and scalable application development.",
-    image: "/images/typescript-course.jpg",
+    image: "/images/typescript-course.png",
   },
 ];

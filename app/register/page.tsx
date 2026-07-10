@@ -1,11 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { auth } from "@/lib/firebase";
-import { useRouter } from "next/navigation";
-import { FirebaseError } from "firebase/app";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import {
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
+import { FirebaseError } from "firebase/app";
+import { auth } from "@/lib/firebase";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -16,8 +19,6 @@ export default function RegisterPage() {
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    alert("Register button clicked");
 
     try {
       const userCredential = await createUserWithEmailAndPassword(
@@ -31,70 +32,77 @@ export default function RegisterPage() {
       });
 
       alert("Registration Successful!");
-
       router.push("/login");
     } catch (error) {
       console.error(error);
+
       if (error instanceof FirebaseError) {
-        alert(`${error.code}\n${error.message}`);
-      } else if (error instanceof Error) {
         alert(error.message);
       } else {
-        alert("Registration failed");
+        alert("Registration Failed");
       }
     }
   };
 
   return (
-    <main className="max-w-md mx-auto mt-10">
-      <h1 className="text-3xl font-bold mb-6">Register</h1>
+    <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-600 via-indigo-700 to-purple-700">
+      <div className="w-full max-w-md rounded-2xl bg-white p-10 shadow-2xl">
+        <h1 className="mb-2 text-center text-4xl font-bold text-gray-800">
+          EduCore
+        </h1>
 
-      <form onSubmit={handleRegister} className="space-y-4">
-        <input
-          type="text"
-          placeholder="Full Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="border p-2 w-full"
-          required
-        />
+        <p className="mb-8 text-center text-gray-500">
+          Create your account
+        </p>
 
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="border p-2 w-full"
-          required
-        />
+        <form onSubmit={handleRegister} className="space-y-5">
+          <input
+            type="text"
+            placeholder="Full Name"
+            className="w-full rounded-lg border p-3 focus:border-blue-500 focus:outline-none"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
 
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="border p-2 w-full"
-          required
-        />
+          <input
+            type="email"
+            placeholder="Email Address"
+            className="w-full rounded-lg border p-3 focus:border-blue-500 focus:outline-none"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
 
-        <button
-          type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded"
-        >
-          Register
-        </button>
-        <div className="mt-6 text-center">
-          <p>
-            Already have an account?{" "}
-            <Link
-            href="/login"
-            className="text-blue-600 font-semibold hover:underline"
-            >
-              Login
-            </Link>
-          </p>
-        </div>
-      </form>
+          <input
+            type="password"
+            placeholder="Password"
+            className="w-full rounded-lg border p-3 focus:border-blue-500 focus:outline-none"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+
+          <button
+            type="submit"
+            className="w-full rounded-lg bg-blue-600 py-3 text-lg font-semibold text-white transition hover:bg-blue-700"
+          >
+            Create Account
+          </button>
+
+          <div className="pt-4 text-center">
+            <p className="text-gray-600">
+              Already have an account?{" "}
+              <Link
+                href="/login"
+                className="font-semibold text-blue-600 hover:underline"
+              >
+                Login
+              </Link>
+            </p>
+          </div>
+        </form>
+      </div>
     </main>
   );
 }

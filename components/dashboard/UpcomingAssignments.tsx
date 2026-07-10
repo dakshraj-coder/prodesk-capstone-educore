@@ -15,7 +15,7 @@ export default function UpcomingAssignments() {
   ];
 
   return (
-    <div className="rounded-xl border bg-white p-6 shadow-md">
+    <div className="rounded-xl border border-slate-200 p-4 transition hover:bg-slate-50">
       <h2 className="mb-4 text-2xl font-bold">
         Upcoming Assignments
       </h2>

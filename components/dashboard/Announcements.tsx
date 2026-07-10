@@ -5,7 +5,7 @@ export default function Announcements() {
         Announcements
       </h2>
 
-      <ul className="space-y-3">
+      <ul className="space-y-4 text-slate-700">
         <li>📢 New React course added.</li>
         <li>📢 Assignment deadline extended.</li>
         <li>📢 Live webinar on Friday.</li>

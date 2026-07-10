@@ -37,37 +37,57 @@ export default function Dashboard() {
     <>
       <Navbar />
 
-      <div className="flex min-h-screen">
+      <div className="flex min-h-screen bg-slate-100">
         <Sidebar />
 
-        <main className="flex-1 bg-slate-100 p-6">
-          <div className="mb-6 flex items-center justify-between">
-            <h1 className="text-3xl font-bold">
-              Student Dashboard
-            </h1>
+        <main className="flex-1 p-10">
+          {/* Header */}
+          <div className="mb-10 flex items-center justify-between">
+            <div>
+              <h1 className="text-4xl font-bold text-slate-800">
+                Student Dashboard
+              </h1>
+
+              <p className="mt-2 text-slate-500">
+                Welcome back! Continue your learning journey.
+              </p>
+            </div>
 
             <button
               onClick={handleLogout}
-              className="rounded bg-red-600 px-4 py-2 text-white"
+              className="rounded-lg bg-red-600 px-5 py-2.5 font-semibold text-white transition hover:bg-red-700"
             >
               Logout
             </button>
           </div>
 
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+          {/* Statistics */}
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
             <StatsCard title="Courses Enrolled" value="12" />
             <StatsCard title="Completed Courses" value="8" />
             <StatsCard title="Certificates" value="5" />
           </div>
 
-          <div className="mt-8 grid gap-6 lg:grid-cols-2">
+          {/* Assignments & Announcements */}
+          <div className="mt-10 grid gap-8 lg:grid-cols-2">
             <UpcomingAssignments />
             <Announcements />
           </div>
 
-          <ContinueLearning />
-          <RecentCourses />
-          <FeaturedCourses />
+          {/* Continue Learning */}
+          <section className="mt-10">
+            <ContinueLearning />
+          </section>
+
+          {/* Recent Courses */}
+          <section className="mt-10">
+            <RecentCourses />
+          </section>
+
+          {/* Featured Courses */}
+          <section className="mt-10">
+            <FeaturedCourses />
+          </section>
         </main>
       </div>
 

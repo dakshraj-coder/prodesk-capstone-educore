@@ -3,44 +3,32 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import {
-  createUserWithEmailAndPassword,
-  updateProfile,
-} from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { FirebaseError } from "firebase/app";
 import { auth } from "@/lib/firebase";
 
-export default function RegisterPage() {
+export default function LoginPage() {
   const router = useRouter();
 
-  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleRegister = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
+      await signInWithEmailAndPassword(auth, email, password);
 
-      await updateProfile(userCredential.user, {
-        displayName: name,
-      });
+      alert("Login Successful!");
 
-      alert("Registration Successful!");
-
-      router.push("/login");
+      router.push("/dashboard");
     } catch (error) {
       console.error(error);
 
       if (error instanceof FirebaseError) {
         alert(error.message);
       } else {
-        alert("Registration Failed");
+        alert("Login Failed");
       }
     }
   };
@@ -48,26 +36,15 @@ export default function RegisterPage() {
   return (
     <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-600 via-indigo-700 to-purple-700">
       <div className="w-full max-w-md rounded-2xl bg-white p-10 shadow-2xl">
-
         <h1 className="mb-2 text-center text-4xl font-bold text-gray-800">
           EduCore
         </h1>
 
         <p className="mb-8 text-center text-gray-500">
-          Create your account
+          Welcome Back
         </p>
 
-        <form onSubmit={handleRegister} className="space-y-5">
-
-          <input
-            type="text"
-            placeholder="Full Name"
-            className="w-full rounded-lg border p-3 focus:border-blue-500 focus:outline-none"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-
+        <form onSubmit={handleLogin} className="space-y-5">
           <input
             type="email"
             placeholder="Email Address"
@@ -90,21 +67,20 @@ export default function RegisterPage() {
             type="submit"
             className="w-full rounded-lg bg-blue-600 py-3 text-lg font-semibold text-white transition hover:bg-blue-700"
           >
-            Create Account
+            Login
           </button>
 
           <div className="pt-4 text-center">
             <p className="text-gray-600">
-              Already have an account?{" "}
+              Do not have an account?{" "}
               <Link
-                href="/login"
+                href="/register"
                 className="font-semibold text-blue-600 hover:underline"
               >
-                Login
+                Register
               </Link>
             </p>
           </div>
-
         </form>
       </div>
     </main>

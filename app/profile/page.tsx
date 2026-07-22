@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function ProfilePage() {
   return (
     <main className="min-h-screen bg-slate-100 p-8">
@@ -10,15 +12,31 @@ export default function ProfilePage() {
         </div>
 
         <div className="space-y-3">
-          <p><strong>Email:</strong> student@example.com</p>
-          <p><strong>Enrolled Courses:</strong> 12</p>
-          <p><strong>Completed Courses:</strong> 8</p>
-          <p><strong>Certificates:</strong> 5</p>
+          <p>
+            <strong>Email:</strong> student@example.com
+          </p>
+
+          <p>
+            <strong>Enrolled Courses:</strong> 12
+          </p>
+
+          <p>
+            <strong>Completed Courses:</strong> 8
+          </p>
+
+          <p>
+            <strong>Certificates:</strong> 5
+          </p>
         </div>
 
-        <button className="mt-6 rounded-lg bg-blue-600 px-5 py-2 text-white hover:bg-blue-700">
-          Edit Profile
-        </button>
+        <div className="mt-8">
+          <Link
+            href="/profile/edit"
+            className="inline-flex rounded-lg bg-blue-600 px-6 py-3 font-medium text-white transition hover:bg-blue-700"
+          >
+            Edit Profile
+          </Link>
+        </div>
       </div>
     </main>
   );

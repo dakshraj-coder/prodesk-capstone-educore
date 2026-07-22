@@ -8,6 +8,7 @@ import { getCourses, deleteCourse } from "@/services/courseService";
 import type { Course } from "@/types/course";
 import { updateCourse } from "@/services/courseService";
 
+import { toast } from "sonner";
 import Navbar from "@/components/layout/Navbar";
 import Sidebar from "@/components/layout/Sidebar";
 import Footer from "@/components/layout/Footer";
@@ -30,6 +31,8 @@ export default function Dashboard() {
   const [editProgress, setEditProgress] = useState(0);
 
   const totalCourses = courses.length;
+  const [loading, setLoading] = useState(true);
+
   const completedCourses = courses.filter(
     (course) => course.progress === 100
   ).length;
@@ -48,6 +51,7 @@ export default function Dashboard() {
     await deleteCourse(id);
     const data = await getCourses();
     setCourses(data);
+    toast.success("Course deleted successfully!");
   };
 
   const handleEdit = (course: Course) => {
@@ -63,11 +67,13 @@ export default function Dashboard() {
         router.replace("/login");
         return;
       }
-
-      const data = await getCourses();
-      setCourses(data);
+      try {
+        const data = await getCourses();
+        setCourses(data);
+      } finally {
+        setLoading(false);
+      }
     });
-
     return () => unsubscribe();
   }, [router]);
 
@@ -79,6 +85,7 @@ export default function Dashboard() {
       description: editDescription,
       progress: editProgress,
     });
+
     const data = await getCourses();
     setCourses(data);
     setEditingId(null);
@@ -86,64 +93,81 @@ export default function Dashboard() {
     setEditDescription("");
     setEditProgress(0);
     
-    alert("Course updated successfully!");
+    toast.success("Course updated successfully!");
   };
+
+  if (loading) {
+    return (
+    <>
+    { <Navbar /> }
+    <div className="flex min-h-screen items-center justify-center bg-slate-100">
+      <div className="h-12 w-12 animate-spin rounded-full border-4 border-slate-300 border-t-blue-600"></div>
+      </div>
+      { <Footer /> }
+      </>
+      );
+    }
 
   return (
     <>
-      <Navbar />
+      { <Navbar /> }
 
       <div className="flex min-h-screen bg-slate-100">
-        <Sidebar />
+        { <Sidebar /> }
 
-        <main className="flex-1 p-10">
-          {/* Header */}
-          <div className="mb-10 flex items-center justify-between">
-            <div>
-              <h1 className="text-4xl font-bold text-slate-800">
-                Student Dashboard
-              </h1>
+        <main className="flex-1 px-4 py-6 sm:px-6 lg:px-8">
+          <div className="mx-auto w-full max-w-7xl">
+            {/* Header */}
+            <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <h1 className="text-2xl font-bold text-slate-800 sm:text-3xl lg:text-4xl">
+                  Student Dashboard
+                </h1>
+                
+                <h1 className="text-4xl font-bold text-slate-900">
+                  👋 Welcome back!
+                </h1>
+                <p className="mt-2 text-slate-500">
+                  Continue learning and track your progress.
+                </p>
+              </div>
 
-              <p className="mt-2 text-slate-500">
-                Welcome back! Continue your learning journey.
-              </p>
-            </div>
-
-            <button
+              <button
               onClick={handleLogout}
               className="rounded-lg bg-red-600 px-5 py-2.5 font-semibold text-white transition hover:bg-red-700"
-            >
-              Logout
-            </button>
-          </div>
-
-          {/* Statistics */}
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-            <StatsCard
-            title="Courses Enrolled"
-            value={totalCourses.toString()}
-            />
+              >
+                Logout
+              </button>
+            </div>
             
-            <StatsCard
-            title="Completed Courses"
-            value={completedCourses.toString()}
-            />
-            <StatsCard
-            title="Certificates"
-            value={completedCourses.toString()}
-            />
-          </div>
-
-          {/* Assignments & Announcements */}
-          <div className="mt-10 grid gap-8 lg:grid-cols-2">
-            <UpcomingAssignments />
-            <Announcements />
-          </div>
-
-          {/* Continue Learning */}
-          <section className="mt-10">
-            <ContinueLearning />
-          </section>
+            {/* Statistics */}
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              <StatsCard
+              title="Courses Enrolled"
+              value={totalCourses.toString()}
+              />
+              
+              <StatsCard
+              title="Completed Courses"
+              value={completedCourses.toString()}
+              />
+              
+              <StatsCard
+              title="Certificates"
+              value={completedCourses.toString()}
+              />
+            </div>
+            
+            {/* Assignments & Announcements */}
+            <div className="mt-10 grid gap-8 lg:grid-cols-2">
+              <UpcomingAssignments />
+              <Announcements />
+            </div>
+            
+            {/* Continue Learning */}
+            <section className="mt-10">
+              <ContinueLearning />
+            </section>
 
           {/* Recent Courses */}
           <section className="mt-10">
@@ -176,11 +200,16 @@ export default function Dashboard() {
             </section>
 
             {courses.length === 0 ? (
-              <div className="rounded-xl bg-white p-6 shadow">
-                <p className="text-gray-500">No courses found.</p>
+              <div className="rounded-xl border border-dashed border-slate-300 bg-white py-12 text-center shadow">
+                <h3 className="text-xl font-semibold text-slate-800">
+                  No courses yet
+                </h3>
+                <p className="mt-2 text-slate-500">
+                  Add your first course to begin your learning journey.
+                </p>
               </div>
-            ) : (
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              ) : (
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
                 {courses.map((course) => (
                   <div
                     key={course.id}
@@ -264,10 +293,11 @@ export default function Dashboard() {
               </div>
             )}
           </section>
-        </main>
+        </div>
+      </main>
       </div>
 
-      <Footer />
+      { <Footer /> }
     </>
   );
 }
